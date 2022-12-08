@@ -160,7 +160,7 @@ if __name__ == "__main__":
     #from sklearn.metrics import accuracy_score
     #print(accuracy_score(label,Y_pred))
 
-    plot, prediction = test_on_img(cur_path + "/from_internet/4.png",model)
+    plot, prediction = test_on_img('C:\Traffic_Signs/cropped/00001.jpg',model)
     s = [str(i) for i in prediction] #konwersja z numparray koncowo do zwyklego inta
     a = int("".join(s))
     import classes
