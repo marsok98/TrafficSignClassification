@@ -4,3 +4,5 @@ yolo_cropped_img = 'C:\Traffic_Signs\cropped'
 
 german_dataset_root = 'C:\Datasety\German-classification'
 network_weights = 'C:\Datasety\German-classification/training/TSR.h5'
+
+#nieuzywane

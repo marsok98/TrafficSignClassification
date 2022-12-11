@@ -10,6 +10,7 @@ from keras.utils import to_categorical
 from keras.models import Sequential, load_model
 from keras.layers import Conv2D,MaxPool2D,Dense,Flatten,Dropout
 from tensorflow import reshape
+from sklearn.metrics import accuracy_score
 
 
 
@@ -132,41 +133,74 @@ def test_on_img(path_to_img,model):
     return image,Y_pred
 
 
-
-
-
-if __name__ == "__main__":
+def learn_model():
     classes = 43
     os.chdir('C:\Datasety\German-classification')
     cur_path = os.getcwd()
 
-    #preprocessing_training_data(classes, cur_path)
-    #X_train,X_test,Y_train, Y_test = prepare_data_to_train(cur_path,classes)
-    #model = build_model(X_train.shape[1:],classes)
-    #model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    #Uczenie modelu
+    preprocessing_training_data(classes, cur_path)
+    X_train,X_test,Y_train, Y_test = prepare_data_to_train(cur_path,classes)
+    model = build_model(X_train.shape[1:],classes)
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-    #epochs = 20
-    #history = model.fit(X_train,Y_train,batch_size=128,epochs=epochs, validation_data=(X_test,Y_test))
+    epochs = 20
+    history = model.fit(X_train,Y_train,batch_size=128,epochs=epochs, validation_data=(X_test,Y_test))
+    plot_accuracy(history)
+    model.save("./training/TSR.h5")
 
-    #plot_accuracy(history)
-    #model.save("./training/TSR.h5")
+    return model
 
+def test_model(model):
+    # Na zbiorze testowym
+    X_test, label = read_from_testcsv(cur_path+'/Test.csv')
 
-    model = load_model(cur_path+'/training/TSR.h5')
-    #X_test, label = read_from_testcsv(cur_path+'/Test.csv')
+    Y_pred = model.predict(X_test)
+    Y_pred = np.argmax(Y_pred,axis=1)
+    print(accuracy_score(label,Y_pred))
 
-    #Y_pred = model.predict(X_test)
-    #Y_pred = np.argmax(Y_pred,axis=1)
-    #from sklearn.metrics import accuracy_score
-    #print(accuracy_score(label,Y_pred))
-
-    plot, prediction = test_on_img('C:\Traffic_Signs/cropped/00001.jpg',model)
-    s = [str(i) for i in prediction] #konwersja z numparray koncowo do zwyklego inta
-    a = int("".join(s))
+def auto_test_cropped_file_from_yolo(model):
     import classes
-    print("Predicted traffic sign is: ", classes.classes[a])
-    plt.imshow(plot)
-    plt.show()
+    path_to_cropped_img = 'C:\Traffic_Signs\cropped'
+    path_to_log = 'C:\Traffic_Signs\log.txt'
+    list_of_img = os.listdir(path_to_cropped_img)
+
+    path = ''
+    list = []
+    for i in list_of_img:
+        path = path_to_cropped_img + '\\' + i
+        plot, prediction = test_on_img(path, model)
+        s = [str(j) for j in prediction]  # konwersja z numparray koncowo do zwyklego inta
+        a = int("".join(s))
+        x = path, classes.classes[a]
+        list.append(x)
+    f = open(path_to_log, 'w')
+    f.write(str(list))
+
+
+if __name__ == "__main__":
+    #Wczytac sciezke do zdjecia z kamery
+    #Odpalic yolo z poziomu pythona
+    #Wypluje to Jsona,
+    #Przetworzyc Jsona, wyciac obraz
+    #Obraz wrzucic na siec
+    #Wynik klasyfikatora w konsoli
+
+    #Na koniec jak bedzie dzialac, wszystkie sciezki ujednolicic
+
+    os.chdir('C:\Datasety\German-classification')
+    cur_path = os.getcwd()
+
+
+    #Zaladowanie z istniejacych wag
+    model = load_model(cur_path+'/training/TSR.h5')
+
+    auto_test_cropped_file_from_yolo(model)
+
+
+
+    # Z plików przycietych po YOLO:
+
 
 
 
