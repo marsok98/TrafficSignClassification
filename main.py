@@ -13,6 +13,11 @@ from tensorflow import reshape
 from sklearn.metrics import accuracy_score
 
 
+import file_path
+
+import get_data_from_yolo
+
+
 
 
 def preprocessing_training_data(number_of_class, dataset_path):
@@ -135,7 +140,7 @@ def test_on_img(path_to_img,model):
 
 def learn_model():
     classes = 43
-    os.chdir('C:\Datasety\German-classification')
+    os.chdir(file_path.german_dataset_root)
     cur_path = os.getcwd()
 
     #Uczenie modelu
@@ -147,13 +152,13 @@ def learn_model():
     epochs = 20
     history = model.fit(X_train,Y_train,batch_size=128,epochs=epochs, validation_data=(X_test,Y_test))
     plot_accuracy(history)
-    model.save("./training/TSR.h5")
+    model.save(file_path.network_weights)
 
     return model
 
 def test_model(model):
     # Na zbiorze testowym
-    X_test, label = read_from_testcsv(cur_path+'/Test.csv')
+    X_test, label = read_from_testcsv(file_path.german_dataset_root+'/Test.csv')
 
     Y_pred = model.predict(X_test)
     Y_pred = np.argmax(Y_pred,axis=1)
@@ -161,8 +166,9 @@ def test_model(model):
 
 def auto_test_cropped_file_from_yolo(model):
     import classes
-    path_to_cropped_img = 'C:\Traffic_Signs\cropped'
-    path_to_log = 'C:\Traffic_Signs\log.txt'
+    path_to_cropped_img = file_path.yolo_cropped_img
+    path_to_log = file_path.log_from_classification
+
     list_of_img = os.listdir(path_to_cropped_img)
 
     path = ''
@@ -173,12 +179,25 @@ def auto_test_cropped_file_from_yolo(model):
         s = [str(j) for j in prediction]  # konwersja z numparray koncowo do zwyklego inta
         a = int("".join(s))
         x = path, classes.classes[a]
+        img = cv2.imread(path)
+        cv2.imshow(classes.classes[a],img)
+        print(classes.classes[a])
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
         list.append(x)
     f = open(path_to_log, 'w')
     f.write(str(list))
 
 
 if __name__ == "__main__":
+    get_data_from_yolo.handle_json_from_yolo(file_path.yolo_out_json,file_path.yolo_cropped_img)
+    model=load_model(file_path.network_weights)
+    auto_test_cropped_file_from_yolo(model)
+
+
+
+
+
     #Wczytac sciezke do zdjecia z kamery
     #Odpalic yolo z poziomu pythona
     #Wypluje to Jsona,
@@ -188,14 +207,20 @@ if __name__ == "__main__":
 
     #Na koniec jak bedzie dzialac, wszystkie sciezki ujednolicic
 
-    os.chdir('C:\Datasety\German-classification')
-    cur_path = os.getcwd()
+    #os.chdir('C:\Datasety\German-classification')
+    #cur_path = os.getcwd()
+
+    #yolo.yolo3('')
+
+
+
+
 
 
     #Zaladowanie z istniejacych wag
-    model = load_model(cur_path+'/training/TSR.h5')
+    #model = load_model(cur_path+'/training/TSR.h5')
 
-    auto_test_cropped_file_from_yolo(model)
+    #auto_test_cropped_file_from_yolo(model)
 
 
 

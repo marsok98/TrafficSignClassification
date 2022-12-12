@@ -2,6 +2,8 @@ import cv2 as cv
 import os
 import json
 
+import file_path
+
 
 def crop_image_by_coordinates(path_to_img,center_x, center_y, width, height,path_to_cropped_img):
 
@@ -75,7 +77,7 @@ def handle_json_from_yolo(path_to_json,path_to_save_cropped_img):
         j += 1
 
 if __name__ == "__main__":
-    handle_json_from_yolo('result.json',"C:\Traffic_Signs\cropped/")
+    handle_json_from_yolo(file_path.yolo_out_json,file_path.yolo_cropped_img)
 
 
 
