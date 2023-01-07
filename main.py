@@ -16,6 +16,7 @@ from sklearn.metrics import accuracy_score
 import file_path
 
 import get_data_from_yolo
+import yolo3image
 
 
 
@@ -190,13 +191,22 @@ def auto_test_cropped_file_from_yolo(model):
 
 
 if __name__ == "__main__":
+
+    image_BGR,x_min,y_min,box_width,box_height = yolo3image.yolo3('C:\Traffic_Signs/ts/00000.jpg')
+    crop_img = image_BGR[y_min:y_min + box_height, x_min: x_min+box_width]
+    cv2.imshow('Cropniety',crop_img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     #get_data_from_yolo.handle_json_from_yolo(file_path.yolo_out_json,file_path.yolo_cropped_img)
     model=load_model(file_path.network_weights)
     #auto_test_cropped_file_from_yolo(model)
+    #do zrobienia
+    #print(test_on_img(image_BGR,model))
 
 
     #TODO
     #Uruchomienie w main yolo, przekazanie wspolrzednych, wyciecie, przekazanie na siec wycinka, predykcja i wynik w oknie
+    #Obsluga listy obrazkow, wyciecie i wrzucenie na siec a nastepnie predykcja
     #Rysowanie na pierwotnym obrazie predicted klasy
     #Spiecie tego w wizualizacje tak jak mial Valentin
     #Opcjonalne - douczenie sieci, tak aby pobawic sie z przerabianiem danych, mini batche itd

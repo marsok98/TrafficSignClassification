@@ -1,4 +1,4 @@
-yolo_out_json = 'C:\darknet\darknet/results/result_OLD.json'
+yolo_out_json = 'results/result_OLD.json'
 yolo_test_data = 'C:\Traffic_Signs/ts'
 yolo_cropped_img = 'C:\Traffic_Signs\cropped/'
 

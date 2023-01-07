@@ -38,6 +38,7 @@ def yolo3(path):
     # In this way image is opened already as numpy array
     # WARNING! OpenCV by default reads images in BGR format
     image_BGR = cv2.imread(path)
+    origin_img = image_BGR
 
     # Check point
     # Showing image shape
@@ -297,7 +298,7 @@ def yolo3(path):
     # Saving resulted image in jpg format by OpenCV function
     # that uses extension to choose format to save with
     cv2.imwrite('results/result_from_yolo.jpg', image_BGR)
-    return x_min
+    return origin_img,x_min,y_min,box_width,box_height
 
 
 if __name__ == "__main__":
