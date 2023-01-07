@@ -190,41 +190,17 @@ def auto_test_cropped_file_from_yolo(model):
 
 
 if __name__ == "__main__":
-    get_data_from_yolo.handle_json_from_yolo(file_path.yolo_out_json,file_path.yolo_cropped_img)
+    #get_data_from_yolo.handle_json_from_yolo(file_path.yolo_out_json,file_path.yolo_cropped_img)
     model=load_model(file_path.network_weights)
-    auto_test_cropped_file_from_yolo(model)
-
-
-
-
-
-    #Wczytac sciezke do zdjecia z kamery
-    #Odpalic yolo z poziomu pythona
-    #Wypluje to Jsona,
-    #Przetworzyc Jsona, wyciac obraz
-    #Obraz wrzucic na siec
-    #Wynik klasyfikatora w konsoli
-
-    #Na koniec jak bedzie dzialac, wszystkie sciezki ujednolicic
-
-    #os.chdir('C:\Datasety\German-classification')
-    #cur_path = os.getcwd()
-
-    #yolo.yolo3('')
-
-
-
-
-
-
-    #Zaladowanie z istniejacych wag
-    #model = load_model(cur_path+'/training/TSR.h5')
-
     #auto_test_cropped_file_from_yolo(model)
 
 
-
-    # Z plików przycietych po YOLO:
+    #TODO
+    #Uruchomienie w main yolo, przekazanie wspolrzednych, wyciecie, przekazanie na siec wycinka, predykcja i wynik w oknie
+    #Rysowanie na pierwotnym obrazie predicted klasy
+    #Spiecie tego w wizualizacje tak jak mial Valentin
+    #Opcjonalne - douczenie sieci, tak aby pobawic sie z przerabianiem danych, mini batche itd
+    #Sprawozdanie i konsultacja z makuchowskim
 
 
 
