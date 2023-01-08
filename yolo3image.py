@@ -248,13 +248,17 @@ def yolo3(path):
     # Defining counter for detected objects
     counter = 1
 
+    #My code
+    list_of_objects =  []
+    object = []
+
     # Checking if there is at least one detected object after non-maximum suppression
     if len(results) > 0:
         # Going through indexes of results
         for i in results.flatten():
             # Showing labels of the detected objects
             print('Object {0}: {1}'.format(counter, labels[int(class_numbers[i])]))
-
+            object.append(counter)
             # Incrementing counter
             counter += 1
 
@@ -262,6 +266,13 @@ def yolo3(path):
             # its width and height
             x_min, y_min = bounding_boxes[i][0], bounding_boxes[i][1]
             box_width, box_height = bounding_boxes[i][2], bounding_boxes[i][3]
+
+            object.append(x_min)
+            object.append(y_min)
+            object.append(box_width)
+            object.append(box_height)
+            list_of_objects.append(object)
+            object = []
 
             # Preparing colour for current bounding box
             # and converting from numpy array to list
@@ -298,7 +309,7 @@ def yolo3(path):
     # Saving resulted image in jpg format by OpenCV function
     # that uses extension to choose format to save with
     cv2.imwrite('results/result_from_yolo.jpg', image_BGR)
-    return origin_img,x_min,y_min,box_width,box_height
+    return list_of_objects
 
 
 if __name__ == "__main__":
