@@ -7,7 +7,7 @@ import get_data_from_yolo
 import yolo3image
 import model_functions
 import os
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 import classes
 def delete_all_files_from_directory(folder_path):
     for file_name in os.listdir(folder_path):
@@ -57,26 +57,12 @@ def make_predictions_and_draw(path_to_test):
                     cv2.FONT_HERSHEY_COMPLEX, 0.7, colours[k], 2)
 
     path_to_save = file_path.results + 'result.jpg'
-    cv2.imshow("Predykcja", img)
+    #cv2.imshow("Predykcja", img)
     cv2.imwrite(path_to_save,img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-if __name__ == "__main__":
-
-    path_to_test = 'C:\Traffic_Signs/ts/00069.jpg'
-    make_predictions_and_draw(path_to_test)
+    #cv2.waitKey(0)
+    #cv2.destroyAllWindows()
 
 
-
-
-    #TODO
-    #Uruchomienie w main yolo, przekazanie wspolrzednych, wyciecie, przekazanie na siec wycinka, predykcja i wynik w oknie
-    #Obsluga listy obrazkow, wyciecie i wrzucenie na siec a nastepnie predykcja
-    #Rysowanie na pierwotnym obrazie predicted klasy
-    # - Spiecie tego w wizualizacje tak jak mial Valentin
-    # - Opcjonalne - douczenie sieci, tak aby pobawic sie z przerabianiem danych, mini batche itd
-    # - Sprawozdanie i konsultacja z makuchowskim
 
 
 
